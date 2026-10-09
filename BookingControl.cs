@@ -5,11 +5,12 @@ using System.Windows.Forms;
 
 namespace CampManagementSystem
 {
-    public partial class BookingForm : Form
+    // DFD Process 3: Manage Bookings (UserControl)
+    public partial class BookingControl : UserControl
     {
-        public BookingForm() { InitializeComponent(); }
+        public BookingControl() { InitializeComponent(); }
 
-        private void BookingForm_Load(object sender, EventArgs e)
+        private void BookingControl_Load(object sender, EventArgs e)
         {
             LoadCustomers();
             LoadCampsites();
@@ -194,7 +195,7 @@ namespace CampManagementSystem
             this.lblSearch = new Label();
             this.dgvBookings = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBookings)).BeginInit();
-            SuspendLayout();
+            this.SuspendLayout();
             lblTitle.AutoSize = true;
             lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             lblTitle.Location = new System.Drawing.Point(20, 15); lblTitle.Text = "Manage Bookings";
@@ -225,24 +226,21 @@ namespace CampManagementSystem
             dgvBookings.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvBookings.Size = new System.Drawing.Size(720, 170);
             dgvBookings.CellClick += dgvBookings_CellClick;
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(760, 460);
-            Controls.Add(lblTitle); Controls.Add(lblBookingID); Controls.Add(txtBookingID);
-            Controls.Add(lblCheckIn); Controls.Add(dtCheckIn);
-            Controls.Add(lblCheckOut); Controls.Add(dtCheckOut);
-            Controls.Add(lblStatus); Controls.Add(cmbStatus);
-            Controls.Add(lblCustomer); Controls.Add(cmbCustomer);
-            Controls.Add(lblCampsite); Controls.Add(cmbCampsite);
-            Controls.Add(btnAdd); Controls.Add(btnUpdate); Controls.Add(btnDelete);
-            Controls.Add(btnSearch); Controls.Add(btnViewAll); Controls.Add(btnClear);
-            Controls.Add(txtSearch); Controls.Add(lblSearch); Controls.Add(dgvBookings);
-            FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false;
-            Name = "BookingForm"; StartPosition = FormStartPosition.CenterParent;
-            Text = "Bookings - Camp Management System";
-            Load += BookingForm_Load;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.Controls.Add(lblTitle); this.Controls.Add(lblBookingID); this.Controls.Add(txtBookingID);
+            this.Controls.Add(lblCheckIn); this.Controls.Add(dtCheckIn);
+            this.Controls.Add(lblCheckOut); this.Controls.Add(dtCheckOut);
+            this.Controls.Add(lblStatus); this.Controls.Add(cmbStatus);
+            this.Controls.Add(lblCustomer); this.Controls.Add(cmbCustomer);
+            this.Controls.Add(lblCampsite); this.Controls.Add(cmbCampsite);
+            this.Controls.Add(btnAdd); this.Controls.Add(btnUpdate); this.Controls.Add(btnDelete);
+            this.Controls.Add(btnSearch); this.Controls.Add(btnViewAll); this.Controls.Add(btnClear);
+            this.Controls.Add(txtSearch); this.Controls.Add(lblSearch); this.Controls.Add(dgvBookings);
+            this.Name = "BookingControl";
+            this.Load += BookingControl_Load;
             ((System.ComponentModel.ISupportInitialize)(this.dgvBookings)).EndInit();
-            ResumeLayout(false); PerformLayout();
+            this.ResumeLayout(false); this.PerformLayout();
         }
 
         private Label lblTitle;

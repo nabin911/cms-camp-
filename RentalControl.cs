@@ -5,11 +5,12 @@ using System.Windows.Forms;
 
 namespace CampManagementSystem
 {
-    public partial class RentalForm : Form
+    // DFD Process 5b: Manage Equipment Rentals (UserControl)
+    public partial class RentalControl : UserControl
     {
-        public RentalForm() { InitializeComponent(); }
+        public RentalControl() { InitializeComponent(); }
 
-        private void RentalForm_Load(object sender, EventArgs e)
+        private void RentalControl_Load(object sender, EventArgs e)
         {
             LoadBookings();
             LoadEquipment();
@@ -189,7 +190,7 @@ namespace CampManagementSystem
             this.lblSearch = new Label();
             this.dgvRentals = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRentals)).BeginInit();
-            SuspendLayout();
+            this.SuspendLayout();
             lblTitle.AutoSize = true;
             lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             lblTitle.Location = new System.Drawing.Point(20, 15); lblTitle.Text = "Manage Equipment Rentals";
@@ -218,23 +219,20 @@ namespace CampManagementSystem
             dgvRentals.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvRentals.Size = new System.Drawing.Size(720, 200);
             dgvRentals.CellClick += dgvRentals_CellClick;
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(760, 460);
-            Controls.Add(lblTitle); Controls.Add(lblRentalID); Controls.Add(txtRentalID);
-            Controls.Add(lblQuantity); Controls.Add(txtQuantity);
-            Controls.Add(lblStatus); Controls.Add(cmbReturnStatus);
-            Controls.Add(lblBooking); Controls.Add(cmbBooking);
-            Controls.Add(lblEquipment); Controls.Add(cmbEquipment);
-            Controls.Add(btnAdd); Controls.Add(btnUpdate); Controls.Add(btnDelete);
-            Controls.Add(btnSearch); Controls.Add(btnViewAll); Controls.Add(btnClear);
-            Controls.Add(txtSearch); Controls.Add(lblSearch); Controls.Add(dgvRentals);
-            FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false;
-            Name = "RentalForm"; StartPosition = FormStartPosition.CenterParent;
-            Text = "Equipment Rentals - Camp Management System";
-            Load += RentalForm_Load;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.Controls.Add(lblTitle); this.Controls.Add(lblRentalID); this.Controls.Add(txtRentalID);
+            this.Controls.Add(lblQuantity); this.Controls.Add(txtQuantity);
+            this.Controls.Add(lblStatus); this.Controls.Add(cmbReturnStatus);
+            this.Controls.Add(lblBooking); this.Controls.Add(cmbBooking);
+            this.Controls.Add(lblEquipment); this.Controls.Add(cmbEquipment);
+            this.Controls.Add(btnAdd); this.Controls.Add(btnUpdate); this.Controls.Add(btnDelete);
+            this.Controls.Add(btnSearch); this.Controls.Add(btnViewAll); this.Controls.Add(btnClear);
+            this.Controls.Add(txtSearch); this.Controls.Add(lblSearch); this.Controls.Add(dgvRentals);
+            this.Name = "RentalControl";
+            this.Load += RentalControl_Load;
             ((System.ComponentModel.ISupportInitialize)(this.dgvRentals)).EndInit();
-            ResumeLayout(false); PerformLayout();
+            this.ResumeLayout(false); this.PerformLayout();
         }
 
         private Label lblTitle;

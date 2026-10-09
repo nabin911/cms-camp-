@@ -43,10 +43,20 @@ namespace CampManagementSystem
                     MessageBox.Show("Login successful. Welcome " + currentRole + "!",
                         "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    MainForm main = new MainForm(currentRole);
+                    // Close this login form and open the full-screen dashboard.
+                    // Using Show() (not ShowDialog) + Close() ensures only one window
+                    // exists at a time — clicking a menu in the dashboard does NOT
+                    // touch the login form because it is already closed.
                     this.Hide();
-                    main.ShowDialog();
-                    this.Show();
+                    MainForm main = new MainForm(currentRole);
+                    main.WindowState = FormWindowState.Maximized;
+                    main.FormClosed += (s, args) =>
+                    {
+                        // When the dashboard closes (Logout / X button), exit the app.
+                        // The login form was hidden so the user never sees it again.
+                        Application.Exit();
+                    };
+                    main.Show();
                 }
                 else
                 {
@@ -155,146 +165,215 @@ namespace CampManagementSystem
 
         private void InitializeComponent()
         {
-            this.lblTitle = new Label();
-            this.label1 = new Label();
-            this.rbCustomer = new RadioButton();
-            this.rbAdmin = new RadioButton();
-            this.lblUsername = new Label();
-            this.txtUsername = new TextBox();
-            this.lblPassword = new Label();
-            this.txtPassword = new TextBox();
-            this.btnLogin = new Button();
-            this.btnRegister = new Button();
-            this.btnClear = new Button();
-            this.btnExit = new Button();
+            pnlHeader = new Panel();
+            lblTitle = new Label();
+            pnlSidebar = new Panel();
+            pnlContent = new Panel();
+            label1 = new Label();
+            rbCustomer = new RadioButton();
+            rbAdmin = new RadioButton();
+            lblUsername = new Label();
+            txtUsername = new TextBox();
+            lblPassword = new Label();
+            txtPassword = new TextBox();
+            btnLogin = new Button();
+            btnRegister = new Button();
+            btnClear = new Button();
+            btnExit = new Button();
+            pnlHeader.SuspendLayout();
+            pnlContent.SuspendLayout();
             SuspendLayout();
-            //
+            // 
+            // pnlHeader
+            // 
+            pnlHeader.BackColor = Color.FromArgb(45, 55, 72);
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Margin = new Padding(4, 5, 4, 5);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(1286, 100);
+            pnlHeader.TabIndex = 2;
+            // 
             // lblTitle
-            //
+            // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            lblTitle.Location = new System.Drawing.Point(80, 20);
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Location = new Point(21, 30);
+            lblTitle.Margin = new Padding(4, 0, 4, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new System.Drawing.Size(280, 30);
-            lblTitle.Text = "Camp Booking System - Login";
-            //
+            lblTitle.Size = new Size(377, 38);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "Camp Management System";
+            // 
+            // pnlSidebar
+            // 
+            pnlSidebar.BackColor = Color.FromArgb(237, 240, 245);
+            pnlSidebar.Dock = DockStyle.Fill;
+            pnlSidebar.Location = new Point(0, 100);
+            pnlSidebar.Margin = new Padding(4, 5, 4, 5);
+            pnlSidebar.Name = "pnlSidebar";
+            pnlSidebar.Size = new Size(1286, 900);
+            pnlSidebar.TabIndex = 1;
+            pnlSidebar.Paint += pnlSidebar_Paint;
+            // 
+            // pnlContent
+            // 
+            pnlContent.Controls.Add(label1);
+            pnlContent.Controls.Add(rbCustomer);
+            pnlContent.Controls.Add(rbAdmin);
+            pnlContent.Controls.Add(lblUsername);
+            pnlContent.Controls.Add(txtUsername);
+            pnlContent.Controls.Add(lblPassword);
+            pnlContent.Controls.Add(txtPassword);
+            pnlContent.Controls.Add(btnLogin);
+            pnlContent.Controls.Add(btnRegister);
+            pnlContent.Controls.Add(btnClear);
+            pnlContent.Controls.Add(btnExit);
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.Location = new Point(0, 100);
+            pnlContent.Margin = new Padding(4, 5, 4, 5);
+            pnlContent.Name = "pnlContent";
+            pnlContent.Size = new Size(1286, 900);
+            pnlContent.TabIndex = 0;
+            // 
             // label1
-            //
+            // 
             label1.AutoSize = true;
-            label1.Location = new System.Drawing.Point(80, 65);
+            label1.Location = new Point(343, 233);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new System.Drawing.Size(60, 15);
+            label1.Size = new Size(50, 25);
+            label1.TabIndex = 0;
             label1.Text = "Role:";
-            //
+            // 
             // rbCustomer
-            //
+            // 
             rbCustomer.AutoSize = true;
-            rbCustomer.Location = new System.Drawing.Point(140, 63);
+            rbCustomer.Location = new Point(429, 230);
+            rbCustomer.Margin = new Padding(4, 5, 4, 5);
             rbCustomer.Name = "rbCustomer";
-            rbCustomer.Size = new System.Drawing.Size(74, 19);
-            rbCustomer.TabStop = true;
+            rbCustomer.Size = new Size(114, 29);
+            rbCustomer.TabIndex = 1;
             rbCustomer.Text = "Customer";
-            //
+            // 
             // rbAdmin
-            //
+            // 
             rbAdmin.AutoSize = true;
-            rbAdmin.Location = new System.Drawing.Point(230, 63);
+            rbAdmin.Location = new Point(557, 230);
+            rbAdmin.Margin = new Padding(4, 5, 4, 5);
             rbAdmin.Name = "rbAdmin";
-            rbAdmin.Size = new System.Drawing.Size(60, 19);
+            rbAdmin.Size = new Size(90, 29);
+            rbAdmin.TabIndex = 2;
             rbAdmin.Text = "Admin";
-            //
+            // 
             // lblUsername
-            //
+            // 
             lblUsername.AutoSize = true;
-            lblUsername.Location = new System.Drawing.Point(80, 110);
+            lblUsername.Location = new Point(343, 300);
+            lblUsername.Margin = new Padding(4, 0, 4, 0);
             lblUsername.Name = "lblUsername";
-            lblUsername.Size = new System.Drawing.Size(78, 15);
+            lblUsername.Size = new Size(95, 25);
+            lblUsername.TabIndex = 3;
             lblUsername.Text = "Username:";
-            //
+            // 
             // txtUsername
-            //
-            txtUsername.Location = new System.Drawing.Point(170, 107);
+            // 
+            txtUsername.Location = new Point(471, 293);
+            txtUsername.Margin = new Padding(4, 5, 4, 5);
             txtUsername.Name = "txtUsername";
-            txtUsername.Size = new System.Drawing.Size(180, 23);
-            //
+            txtUsername.Size = new Size(313, 31);
+            txtUsername.TabIndex = 4;
+            // 
             // lblPassword
-            //
+            // 
             lblPassword.AutoSize = true;
-            lblPassword.Location = new System.Drawing.Point(80, 150);
+            lblPassword.Location = new Point(343, 367);
+            lblPassword.Margin = new Padding(4, 0, 4, 0);
             lblPassword.Name = "lblPassword";
-            lblPassword.Size = new System.Drawing.Size(69, 15);
+            lblPassword.Size = new Size(91, 25);
+            lblPassword.TabIndex = 5;
             lblPassword.Text = "Password:";
-            //
+            // 
             // txtPassword
-            //
-            txtPassword.Location = new System.Drawing.Point(170, 147);
+            // 
+            txtPassword.Location = new Point(471, 360);
+            txtPassword.Margin = new Padding(4, 5, 4, 5);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
-            txtPassword.Size = new System.Drawing.Size(180, 23);
-            //
+            txtPassword.Size = new Size(313, 31);
+            txtPassword.TabIndex = 6;
+            // 
             // btnLogin
-            //
-            btnLogin.Location = new System.Drawing.Point(80, 195);
+            // 
+            btnLogin.Location = new Point(471, 433);
+            btnLogin.Margin = new Padding(4, 5, 4, 5);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new System.Drawing.Size(80, 30);
+            btnLogin.Size = new Size(114, 50);
+            btnLogin.TabIndex = 7;
             btnLogin.Text = "Login";
             btnLogin.UseVisualStyleBackColor = true;
             btnLogin.Click += btnLogin_Click;
-            //
+            // 
             // btnRegister
-            //
-            btnRegister.Location = new System.Drawing.Point(170, 195);
+            // 
+            btnRegister.Location = new Point(600, 433);
+            btnRegister.Margin = new Padding(4, 5, 4, 5);
             btnRegister.Name = "btnRegister";
-            btnRegister.Size = new System.Drawing.Size(85, 30);
+            btnRegister.Size = new Size(114, 50);
+            btnRegister.TabIndex = 8;
             btnRegister.Text = "Register";
             btnRegister.UseVisualStyleBackColor = true;
             btnRegister.Click += btnRegister_Click;
-            //
+            // 
             // btnClear
-            //
-            btnClear.Location = new System.Drawing.Point(265, 195);
+            // 
+            btnClear.Location = new Point(729, 433);
+            btnClear.Margin = new Padding(4, 5, 4, 5);
             btnClear.Name = "btnClear";
-            btnClear.Size = new System.Drawing.Size(80, 30);
+            btnClear.Size = new Size(114, 50);
+            btnClear.TabIndex = 9;
             btnClear.Text = "Clear";
             btnClear.UseVisualStyleBackColor = true;
             btnClear.Click += btnClear_Click;
-            //
+            // 
             // btnExit
-            //
-            btnExit.Location = new System.Drawing.Point(170, 235);
+            // 
+            btnExit.Location = new Point(600, 508);
+            btnExit.Margin = new Padding(4, 5, 4, 5);
             btnExit.Name = "btnExit";
-            btnExit.Size = new System.Drawing.Size(80, 30);
+            btnExit.Size = new Size(114, 50);
+            btnExit.TabIndex = 10;
             btnExit.Text = "Exit";
             btnExit.UseVisualStyleBackColor = true;
             btnExit.Click += btnExit_Click;
-            //
+            // 
             // LoginForm
-            //
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            // 
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(400, 290);
-            Controls.Add(lblTitle);
-            Controls.Add(label1);
-            Controls.Add(rbCustomer);
-            Controls.Add(rbAdmin);
-            Controls.Add(lblUsername);
-            Controls.Add(txtUsername);
-            Controls.Add(lblPassword);
-            Controls.Add(txtPassword);
-            Controls.Add(btnLogin);
-            Controls.Add(btnRegister);
-            Controls.Add(btnClear);
-            Controls.Add(btnExit);
+            ClientSize = new Size(1286, 1000);
+            Controls.Add(pnlContent);
+            Controls.Add(pnlSidebar);
+            Controls.Add(pnlHeader);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login - Camp Management System";
             Load += LoginForm_Load;
+            pnlHeader.ResumeLayout(false);
+            pnlHeader.PerformLayout();
+            pnlContent.ResumeLayout(false);
+            pnlContent.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Panel pnlSidebar;
+        private System.Windows.Forms.Panel pnlContent;
         private Label lblTitle;
         private Label label1;
         private RadioButton rbCustomer;
@@ -307,5 +386,10 @@ namespace CampManagementSystem
         private Button btnRegister;
         private Button btnClear;
         private Button btnExit;
+
+        private void pnlSidebar_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

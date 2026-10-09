@@ -1,17 +1,20 @@
 # Camp Management System
 
-A simple **C# Windows Forms App (.NET 10)** for a college semester project.
+A **single-window dashboard-style** **C# Windows Forms App (.NET 10)** for a college semester project.
 Built with **Microsoft SQL Server LocalDB** and basic **ADO.NET** (`SqlConnection`, `SqlCommand`, `SqlDataAdapter`, `DataTable`).
 Designed to match the supplied **ER diagram** and **Level-1 DFD** exactly.
 
 ---
 
 ## ✨ Features
-- Login for **Admin** and **Customer**
-- Full **CRUD** (Add / View / Update / Delete / Search) for every entity
-- **Parameterized SQL** (`@param`) throughout — safe from SQL injection
-- Clean, single-file, code-behind WinForms — easy to explain in a viva
-- Built on .NET 10 SDK (works with `dotnet run` from the CLI)
+- **Traditional login window** (fixed size, modal) → full-screen **dashboard window** opens after success.
+- **One main window at a time** — sidebar navigation, no popup windows for CRUD pages.
+- Login for **Admin** and **Customer**.
+- Full **CRUD** (Add / View / Update / Delete / Search) for every entity.
+- **Parameterized SQL** (`@param`) throughout.
+- Clean, single-file WinForms — easy to explain in a viva.
+- Built on .NET 10 SDK.
+- **Back** and **Logout** buttons in the header.
 
 ---
 
@@ -21,20 +24,24 @@ cms(camp)/
 ├── cms(camp).csproj               # .NET 10 (net10.0-windows) SDK project
 ├── Program.cs                     # Entry point → LoginForm
 ├── DatabaseHelper.cs              # SqlConnection + ADO.NET helpers
-├── LoginForm.cs                   # DFD Process 1 — Authenticate User
-├── MainForm.cs                    # Navigation dashboard
-├── CampsiteForm.cs                # DFD Process 2 — Manage Campsites
-├── BookingForm.cs                 # DFD Process 3 — Manage Bookings
-├── PaymentForm.cs                 # DFD Process 4 — Manage Payments
-├── EquipmentForm.cs               # DFD Process 5a — Manage Equipment
-├── RentalForm.cs                  # DFD Process 5b — Manage Rentals
+│
+├── LoginForm.cs                   # DFD Process 1 — Authenticate User (Form, fixed size)
+├── MainForm.cs                    # ⭐ Full-screen dashboard
+│                                   (sidebar + content panel)
+│
+├── CampsiteControl.cs             # DFD Process 2 — Manage Campsites  (UserControl)
+├── BookingControl.cs              # DFD Process 3 — Manage Bookings   (UserControl)
+├── PaymentControl.cs              # DFD Process 4 — Manage Payments   (UserControl)
+├── EquipmentControl.cs            # DFD Process 5a — Manage Equipment (UserControl)
+├── RentalControl.cs               # DFD Process 5b — Manage Rentals   (UserControl)
+│
 ├── SQL/CampManagementDB.sql       # CREATE TABLE + sample INSERT data
 ├── README.md
 ├── brain.md                       # AI project memory
+├── structure.md                   # File-by-file project map
+├── variables.md                   # Every variable / control in the project
 └── system design/                 # ER diagram + 0-level & Level-1 DFDs
 ```
-
-> Modern .NET 10 SDK style — each form's designer code is inlined in the same `.cs` file (no `*.Designer.cs` or `*.resx` files).
 
 ---
 
@@ -47,28 +54,15 @@ sqllocaldb start MSSQLLocalDB
 ```
 
 ### 2. Create the database
-**Option A — SSMS:** Open `SQL/CampManagementDB.sql` in SQL Server Management Studio, connect to `(localdb)\MSSQLLocalDB`, press F5.
+**Option A — SSMS:** Open `SQL/CampManagementDB.sql` in SSMS, connect to `(localdb)\MSSQLLocalDB`, press F5.
 
-**Option B — sqlcmd (no SSMS needed):**
+**Option B — sqlcmd:**
 ```powershell
 sqlcmd -S "(localdb)\MSSQLLocalDB" -i "C:\Users\sthan\source\repos\cms(camp)\SQL\CampManagementDB.sql"
 ```
 
-This creates the database `CampManagementDB`, all 7 tables with PK/FK constraints, and seeds sample data.
-
 ### 3. Configure the connection string (if needed)
-Open `DatabaseHelper.cs:18` and set the `connString` to match your local SQL Server:
-```csharp
-// LocalDB (default — already configured)
-private static readonly string connString =
-    @"Server=(localdb)\MSSQLLocalDB;Database=CampManagementDB;Integrated Security=True;";
-
-// SQL Server Express
-// @"Server=.\SQLEXPRESS;Database=CampManagementDB;Integrated Security=True;";
-
-// SQL authentication
-// @"Server=.\SQLEXPRESS;Database=CampManagementDB;User Id=sa;Password=yourpass;";
-```
+Open `DatabaseHelper.cs:18` and adjust the `connString`.
 
 ### 4. Build & run
 
@@ -82,7 +76,46 @@ dotnet build "C:\Users\sthan\source\repos\cms(camp)\cms(camp).csproj"
 dotnet run   --project "C:\Users\sthan\source\repos\cms(camp)\cms(camp).csproj"
 ```
 
-The Login window opens. Use the credentials below.
+The **Login** window opens (small, centered). After login, the **dashboard** opens in **full-screen** (`WindowState = Maximized`). Only one window exists at a time.
+
+---
+
+## 🖥 UI Walk-through
+
+### Login Window (traditional modal)
+```
+┌──────────────────────────────────────────┐
+│   Camp Booking System - Login            │
+│                                          │
+│   Role:    (•) Customer  ( ) Admin       │
+│   Username: [_______________________]    │
+│   Password: [_______________________]    │
+│                                          │
+│        [ Login ]  [ Register ]  [ Clear ]│
+│                  [ Exit ]                │
+└──────────────────────────────────────────┘
+```
+
+### Dashboard Window (full-screen after login)
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  Camp Management System   Welcome, Admin   Role: Admin  [Back] [Logout]│  pnlHeader
+├──────────────┬───────────────────────────────────────────────────────┤
+│              │                                                       │
+│  🏕 Campsites│                                                       │
+│  📅 Bookings │                                                       │
+│  💳 Payments │            UserControl (current view)                 │
+│  🎒 Equipment│            e.g. CampsiteControl                       │
+│  🔄 Rentals  │            ↳ Grid + Add/Update/Delete/Search          │
+│              │                                                       │
+│  pnlSidebar  │                     pnlContent                         │
+└──────────────┴───────────────────────────────────────────────────────┘
+```
+
+- Clicking a sidebar item replaces the content panel with the matching `UserControl` (no new window is opened).
+- The active sidebar button is highlighted in **SteelBlue**.
+- **Back** returns to the default Campsites view.
+- **Logout** (or closing the dashboard window) exits the application. The hidden LoginForm never reappears.
 
 ---
 
@@ -95,12 +128,12 @@ The Login window opens. Use the credentials below.
 | Customer | `priya@gmail.com` | `priya123` |
 | Customer | `amit@gmail.com` | `amit123` |
 
-> Customers log in with their **Email** as the username. The **Register** button on the login form lets a new customer self-register (used during demo so extra users can be added on the fly).
+> Customers log in with their **Email** as the username. The **Register** button on the login form lets a new customer self-register.
 
 ---
 
 ## 🧩 ER Diagram → SQL Tables
-The exact 7 entities from the ER diagram are mapped 1-to-1 to SQL tables:
+The exact 7 entities from the ER diagram are mapped 1-to-1 to SQL tables (see `SQL/CampManagementDB.sql`):
 
 | Table | Columns |
 |-------|---------|
@@ -114,17 +147,17 @@ The exact 7 entities from the ER diagram are mapped 1-to-1 to SQL tables:
 
 ---
 
-## 🔁 DFD Level-1 → Forms
-| DFD Process | Form(s) | Operations |
-|-------------|---------|-----------|
-| **1 – Authenticate User** | `LoginForm` | Login (Admin / Customer), Register new customer |
-| **2 – Manage Campsites** | `CampsiteForm` | Add / Update / Delete / Search / View All |
-| **3 – Manage Bookings** | `BookingForm` | Add / Update / Delete / Search / View All |
-| **4 – Manage Payment** | `PaymentForm` | Add / Update / Delete / Search / View All |
-| **5 – Manage Equipment Rental** | `EquipmentForm`, `RentalForm` | Add / Update / Delete / Search / View All |
+## 🔁 DFD Level-1 → Modules
+| DFD Process | Module (File) | Operations |
+|-------------|---------------|-----------|
+| **1 – Authenticate User** | `LoginForm.cs` | Login (Admin / Customer), Register |
+| **2 – Manage Campsites** | `CampsiteControl.cs` | Add / Update / Delete / Search / View All |
+| **3 – Manage Bookings** | `BookingControl.cs` | Add / Update / Delete / Search / View All |
+| **4 – Manage Payment** | `PaymentControl.cs` | Add / Update / Delete / Search / View All |
+| **5 – Manage Equipment Rental** | `EquipmentControl.cs`, `RentalControl.cs` | Add / Update / Delete / Search / View All |
 
-Every form exposes the same five button handlers used by the DFD processes:
-`btnAdd_Click`, `btnUpdate_Click`, `btnDelete_Click`, `btnSearch_Click`, plus `btnViewAll_Click` / `btnClear_Click` and a `dgvXxx_CellClick` to load a row into the inputs.
+Every CRUD control exposes the same six button handlers:
+`btnAdd_Click`, `btnUpdate_Click`, `btnDelete_Click`, `btnSearch_Click`, `btnViewAll_Click`, `btnClear_Click`, plus `dgvXxx_CellClick`.
 
 ---
 
@@ -141,26 +174,16 @@ DatabaseHelper.ExecuteNonQuery(
     "INSERT INTO dbo.Campsite (SiteName, PricePerNight, AvailabilityStatus, AdminID) VALUES (@n,@p,@s,@a)",
     new[] { new SqlParameter("@n", "..."), ... });
 ```
-`SqlDataAdapter.Fill(dt)` is used to populate every `DataGridView`.
-
----
-
-## 📂 Naming Conventions
-| Control | Prefix | Example |
-|---------|--------|---------|
-| Button | `btn` | `btnAdd`, `btnSearch` |
-| TextBox | `txt` | `txtSiteName` |
-| ComboBox | `cmb` | `cmbStatus` |
-| DateTimePicker | `dt` | `dtCheckIn` |
-| DataGridView | `dgv` | `dgvCampsites` |
-| Label | `lbl` | `lblPrice` |
+`SqlDataAdapter.Fill(dt)` populates every `DataGridView`.
 
 ---
 
 ## 📚 Notes for the Demo
 - Show **ER diagram** → open SQL script (`SQL/CampManagementDB.sql`).
 - Show **Level-0 DFD** (system + customer + admin).
-- Show **Level-1 DFD** → walk through each form and the matching button.
+- Show **Level-1 DFD** → walk through each control and the matching button (all inside the same dashboard).
+- Highlight **single-window architecture** — sidebar navigation, only one control visible at a time, dashboard takes full screen.
+- Highlight **window-lifecycle discipline** — LoginForm is hidden before MainForm opens; MainForm's `FormClosed` event calls `Application.Exit()` so the hidden LoginForm never reappears.
 - Highlight **parameterized queries** in `DatabaseHelper.cs` and explain how they prevent SQL injection.
 - Login as **admin/admin123**, perform Add/Update/Delete on Campsite, then on a Booking, then record a Payment for that Booking, then attach a Rental — demonstrating the full process flow from the DFD.
 
@@ -168,5 +191,5 @@ DatabaseHelper.ExecuteNonQuery(
 
 ## 🛠 Build Notes
 - **Target framework:** `net10.0-windows`
-- **NuGet:** `System.Data.SqlClient` 4.9.1 (added because .NET 10 no longer ships it in the BCL)
-- **Build warnings:** ~101 deprecation notices from `System.Data.SqlClient` recommending `Microsoft.Data.SqlClient`. They are harmless — code runs fine. Migrate later if desired.
+- **NuGet:** `System.Data.SqlClient` 4.9.1
+- **Latest build:** 0 errors. App launches cleanly.

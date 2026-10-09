@@ -5,11 +5,15 @@ using System.Windows.Forms;
 
 namespace CampManagementSystem
 {
-    public partial class CampsiteForm : Form
+    // DFD Process 2: Manage Campsites (UserControl — loaded into MainForm's content panel)
+    public partial class CampsiteControl : UserControl
     {
-        public CampsiteForm() { InitializeComponent(); }
+        public CampsiteControl()
+        {
+            InitializeComponent();
+        }
 
-        private void CampsiteForm_Load(object sender, EventArgs e)
+        private void CampsiteControl_Load(object sender, EventArgs e)
         {
             LoadAdmins();
             LoadData();
@@ -191,7 +195,7 @@ namespace CampManagementSystem
             this.lblSearch = new Label();
             this.dgvCampsites = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCampsites)).BeginInit();
-            SuspendLayout();
+            this.SuspendLayout();
             lblTitle.AutoSize = true;
             lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             lblTitle.Location = new System.Drawing.Point(20, 15);
@@ -221,23 +225,20 @@ namespace CampManagementSystem
             dgvCampsites.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvCampsites.Size = new System.Drawing.Size(720, 200);
             dgvCampsites.CellClick += dgvCampsites_CellClick;
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(760, 460);
-            Controls.Add(lblTitle); Controls.Add(lblCampsiteID); Controls.Add(txtCampsiteID);
-            Controls.Add(lblSiteName); Controls.Add(txtSiteName);
-            Controls.Add(lblPrice); Controls.Add(txtPrice);
-            Controls.Add(lblStatus); Controls.Add(cmbStatus);
-            Controls.Add(lblAdmin); Controls.Add(cmbAdmin);
-            Controls.Add(btnAdd); Controls.Add(btnUpdate); Controls.Add(btnDelete);
-            Controls.Add(btnSearch); Controls.Add(btnViewAll); Controls.Add(btnClear);
-            Controls.Add(txtSearch); Controls.Add(lblSearch); Controls.Add(dgvCampsites);
-            FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false;
-            Name = "CampsiteForm"; StartPosition = FormStartPosition.CenterParent;
-            Text = "Campsites - Camp Management System";
-            Load += CampsiteForm_Load;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.Controls.Add(lblTitle); this.Controls.Add(lblCampsiteID); this.Controls.Add(txtCampsiteID);
+            this.Controls.Add(lblSiteName); this.Controls.Add(txtSiteName);
+            this.Controls.Add(lblPrice); this.Controls.Add(txtPrice);
+            this.Controls.Add(lblStatus); this.Controls.Add(cmbStatus);
+            this.Controls.Add(lblAdmin); this.Controls.Add(cmbAdmin);
+            this.Controls.Add(btnAdd); this.Controls.Add(btnUpdate); this.Controls.Add(btnDelete);
+            this.Controls.Add(btnSearch); this.Controls.Add(btnViewAll); this.Controls.Add(btnClear);
+            this.Controls.Add(txtSearch); this.Controls.Add(lblSearch); this.Controls.Add(dgvCampsites);
+            this.Name = "CampsiteControl";
+            this.Load += CampsiteControl_Load;
             ((System.ComponentModel.ISupportInitialize)(this.dgvCampsites)).EndInit();
-            ResumeLayout(false); PerformLayout();
+            this.ResumeLayout(false); this.PerformLayout();
         }
 
         private Label lblTitle;

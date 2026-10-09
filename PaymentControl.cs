@@ -5,11 +5,12 @@ using System.Windows.Forms;
 
 namespace CampManagementSystem
 {
-    public partial class PaymentForm : Form
+    // DFD Process 4: Manage Payment (UserControl)
+    public partial class PaymentControl : UserControl
     {
-        public PaymentForm() { InitializeComponent(); }
+        public PaymentControl() { InitializeComponent(); }
 
-        private void PaymentForm_Load(object sender, EventArgs e)
+        private void PaymentControl_Load(object sender, EventArgs e)
         {
             LoadBookings();
             LoadData();
@@ -181,7 +182,7 @@ namespace CampManagementSystem
             this.lblSearch = new Label();
             this.dgvPayments = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPayments)).BeginInit();
-            SuspendLayout();
+            this.SuspendLayout();
             lblTitle.AutoSize = true;
             lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             lblTitle.Location = new System.Drawing.Point(20, 15); lblTitle.Text = "Manage Payments";
@@ -213,24 +214,21 @@ namespace CampManagementSystem
             dgvPayments.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvPayments.Size = new System.Drawing.Size(720, 170);
             dgvPayments.CellClick += dgvPayments_CellClick;
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(760, 460);
-            Controls.Add(lblTitle); Controls.Add(lblPaymentID); Controls.Add(txtPaymentID);
-            Controls.Add(lblAmount); Controls.Add(txtAmount);
-            Controls.Add(lblDate); Controls.Add(dtPaymentDate);
-            Controls.Add(lblMode); Controls.Add(cmbPaymentMode);
-            Controls.Add(lblStatus); Controls.Add(cmbPaymentStatus);
-            Controls.Add(lblBooking); Controls.Add(cmbBooking);
-            Controls.Add(btnAdd); Controls.Add(btnUpdate); Controls.Add(btnDelete);
-            Controls.Add(btnSearch); Controls.Add(btnViewAll); Controls.Add(btnClear);
-            Controls.Add(txtSearch); Controls.Add(lblSearch); Controls.Add(dgvPayments);
-            FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false;
-            Name = "PaymentForm"; StartPosition = FormStartPosition.CenterParent;
-            Text = "Payments - Camp Management System";
-            Load += PaymentForm_Load;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.Controls.Add(lblTitle); this.Controls.Add(lblPaymentID); this.Controls.Add(txtPaymentID);
+            this.Controls.Add(lblAmount); this.Controls.Add(txtAmount);
+            this.Controls.Add(lblDate); this.Controls.Add(dtPaymentDate);
+            this.Controls.Add(lblMode); this.Controls.Add(cmbPaymentMode);
+            this.Controls.Add(lblStatus); this.Controls.Add(cmbPaymentStatus);
+            this.Controls.Add(lblBooking); this.Controls.Add(cmbBooking);
+            this.Controls.Add(btnAdd); this.Controls.Add(btnUpdate); this.Controls.Add(btnDelete);
+            this.Controls.Add(btnSearch); this.Controls.Add(btnViewAll); this.Controls.Add(btnClear);
+            this.Controls.Add(txtSearch); this.Controls.Add(lblSearch); this.Controls.Add(dgvPayments);
+            this.Name = "PaymentControl";
+            this.Load += PaymentControl_Load;
             ((System.ComponentModel.ISupportInitialize)(this.dgvPayments)).EndInit();
-            ResumeLayout(false); PerformLayout();
+            this.ResumeLayout(false); this.PerformLayout();
         }
 
         private Label lblTitle;

@@ -5,11 +5,12 @@ using System.Windows.Forms;
 
 namespace CampManagementSystem
 {
-    public partial class EquipmentForm : Form
+    // DFD Process 5a: Manage Equipment (UserControl)
+    public partial class EquipmentControl : UserControl
     {
-        public EquipmentForm() { InitializeComponent(); }
+        public EquipmentControl() { InitializeComponent(); }
 
-        private void EquipmentForm_Load(object sender, EventArgs e) { LoadData(); }
+        private void EquipmentControl_Load(object sender, EventArgs e) { LoadData(); }
 
         private void LoadData()
         {
@@ -136,7 +137,7 @@ namespace CampManagementSystem
             this.lblSearch = new Label();
             this.dgvEquipment = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEquipment)).BeginInit();
-            SuspendLayout();
+            this.SuspendLayout();
             lblTitle.AutoSize = true;
             lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             lblTitle.Location = new System.Drawing.Point(20, 15); lblTitle.Text = "Manage Equipment";
@@ -160,21 +161,18 @@ namespace CampManagementSystem
             dgvEquipment.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvEquipment.Size = new System.Drawing.Size(720, 250);
             dgvEquipment.CellClick += dgvEquipment_CellClick;
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(760, 450);
-            Controls.Add(lblTitle); Controls.Add(lblEquipmentID); Controls.Add(txtEquipmentID);
-            Controls.Add(lblName); Controls.Add(txtEquipmentName);
-            Controls.Add(lblPrice); Controls.Add(txtRentalPrice);
-            Controls.Add(btnAdd); Controls.Add(btnUpdate); Controls.Add(btnDelete);
-            Controls.Add(btnSearch); Controls.Add(btnViewAll); Controls.Add(btnClear);
-            Controls.Add(txtSearch); Controls.Add(lblSearch); Controls.Add(dgvEquipment);
-            FormBorderStyle = FormBorderStyle.FixedDialog; MaximizeBox = false;
-            Name = "EquipmentForm"; StartPosition = FormStartPosition.CenterParent;
-            Text = "Equipment - Camp Management System";
-            Load += EquipmentForm_Load;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.Controls.Add(lblTitle); this.Controls.Add(lblEquipmentID); this.Controls.Add(txtEquipmentID);
+            this.Controls.Add(lblName); this.Controls.Add(txtEquipmentName);
+            this.Controls.Add(lblPrice); this.Controls.Add(txtRentalPrice);
+            this.Controls.Add(btnAdd); this.Controls.Add(btnUpdate); this.Controls.Add(btnDelete);
+            this.Controls.Add(btnSearch); this.Controls.Add(btnViewAll); this.Controls.Add(btnClear);
+            this.Controls.Add(txtSearch); this.Controls.Add(lblSearch); this.Controls.Add(dgvEquipment);
+            this.Name = "EquipmentControl";
+            this.Load += EquipmentControl_Load;
             ((System.ComponentModel.ISupportInitialize)(this.dgvEquipment)).EndInit();
-            ResumeLayout(false); PerformLayout();
+            this.ResumeLayout(false); this.PerformLayout();
         }
 
         private Label lblTitle;
